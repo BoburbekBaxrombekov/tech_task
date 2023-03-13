@@ -38,7 +38,7 @@ const DELETE_FILE = `
 
 const uploadFile = (file_name, format, mime_type, storage) => fetchAll(NEW_FILE, file_name, format, mime_type, storage)
 const findByName = (file_name) => fetchAll(GET_ONE_BY_NAME, file_name)
-const findById = (id) => fetchAll(GET_ONE_BY_ID, id)
+const findById = (id) => fetch(GET_ONE_BY_ID, id)
 const deleteById = (id) => fetchAll(DELETE_FILE, id)
 const getByPagination = (limit, page) => {
     if(limit && page){

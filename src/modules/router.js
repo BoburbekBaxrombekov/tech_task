@@ -13,7 +13,14 @@ router
     .post('/signin', Auth.SignIn)
     .post('/signin/new_token', Auth.RefreshToken)
     .post('/signup', Auth.SignUp)
-    .post('/file/upload', passport.authenticate('jwt', {session: false}), 
+    // .post('/file/upload', passport.authenticate('jwt', {session: false}), 
+    // fileUpload({createParentPath: true}),
+    // filesPayloadExists,
+    // fileExtLimiter(['.png', '.jpg', '.jpeg', '.pdf', '.docx']),
+    // fileSizeLimiter, 
+    // fileUploadModule.UploadFile
+    // )
+    .post('/file/upload', 
     fileUpload({createParentPath: true}),
     filesPayloadExists,
     fileExtLimiter(['.png', '.jpg', '.jpeg', '.pdf', '.docx']),

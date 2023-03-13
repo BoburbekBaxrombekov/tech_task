@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const { uploadFile, findByName, getByPagination, findById, deleteById } = require('./model')
  module.exports = {
     UploadFile: async (req, res) => {
@@ -37,9 +38,9 @@ const { uploadFile, findByName, getByPagination, findById, deleteById } = requir
         try {
             const { id } = req.params
             const foundItem = await findById(id)
-            if(foundItem.length){
+            if(foundItem){
                 await deleteById(id)
-                
+                fs.unlinkSync(path.join(__dirname, '../../', 'files', `${foundItem.file_name}.${foundItem.format}`))
                 res.send({status: 'success', message: 'Successfully deleted'}).status(200)
             }else{
                 res.send({status: 'error', message: 'File with entered id is not founded'}).status(400)
@@ -52,7 +53,7 @@ const { uploadFile, findByName, getByPagination, findById, deleteById } = requir
         try {
             const { id } = req.params
             const foundItem = await findById(id)
-            if(foundItem.length){
+            if(foundItem){
                 res.send(foundItem)
             }else{
                 res.send({status: 'error', message: 'File with entered id is not founded'}).status(400)
