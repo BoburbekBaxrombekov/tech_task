@@ -20,9 +20,9 @@ router
     fileSizeLimiter, 
     fileUploadModule.UploadFile
     )
-    .get('/file/list', () => {})
-    .delete('/file/delete/:id', () => {})
-    .get('/file/:id', () => {})
+    .get('/file/list/:list_size?/:page?', fileUploadModule.getFileList)
+    .delete('/file/delete/:id', fileUploadModule.deleteFile)
+    .get('/file/:id', fileUploadModule.getFileById)
     .get('/file/download/:id', () => {})
     .put('/file/updage/:id', () => {})
     .get('/info', () => {})

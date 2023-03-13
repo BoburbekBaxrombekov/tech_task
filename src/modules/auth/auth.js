@@ -9,6 +9,7 @@ module.exports = {
     SignIn: async (req, res) => {
         try {
             const { login, password } = req.body
+            console.log(login, password);
             const candidate = await findUser(login)
             if(candidate){
                 //* User exist with this login
