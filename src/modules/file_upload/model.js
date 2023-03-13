@@ -1,46 +1,19 @@
 const { fetch, fetchAll } = require('../../lib/postgres')
 
-const LOGIN = `
-    SELECT
-        id
-    FROM
-        users
-    WHERE
-        id = $1
-    AND
-        password = $2
-`
-const FIND_USER = `
+const GET_LIST = `
     SELECT
         *
     FROM
-        users
-    WHERE
-        id = $1
+        files
 `
-const FIND_USER_BY_ID = `
-    SELECT
-        id,
-        uniq_id
-    FROM
-        users
-    WHERE
-        uniq_id = $1
-`
-const NEW_USER = `
+const NEW_FILE = `
     INSERT INTO 
-        users(id, password) 
-    VALUES ($1, $2)
+        files(file_name, format, mime_type, storage) 
+    VALUES ($1, $2, $3, $4)
 `
 
-const userLogin = (login, password) => fetchAll(LOGIN, login, password)
-const registerUser = (login, password) => fetchAll(NEW_USER, login, password)
-const findUser = (login) => fetch(FIND_USER, login)
-const findUserById = (id) => fetch(FIND_USER_BY_ID, id)
+const uploadFile = (file_name, format, mime_type, storage) => fetchAll(NEW_FILE, file_name, format, mime_type, storage)
 
 module.exports = {
-    userLogin,
-    registerUser,
-    findUser,
-    findUserById
+    uploadFile
 }
