@@ -1,6 +1,6 @@
 const bcyrpt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { userLogin, registerUser, findUser } = require('./model')
+const { registerUser, findUser } = require('./model')
 const User = require('../../models/user_model')
 
 const {KEYS} = require('../../config')
@@ -9,7 +9,6 @@ module.exports = {
     SignIn: async (req, res) => {
         try {
             const { login, password } = req.body
-            console.log(login, password);
             const candidate = await findUser(login)
             if(candidate){
                 //* User exist with this login
@@ -56,7 +55,7 @@ module.exports = {
                 const newToken = jwt.sign({
                     email: email,
                     user_uuid: user_uuid
-                }, KEYS.jwt, {expiresIn: 60 * 10})
+                }, KEYS.jwt, {expiresIn: 60 * 15})
                 res.send({
                     token: `Bearer ${newToken}`
                 }).status(200)

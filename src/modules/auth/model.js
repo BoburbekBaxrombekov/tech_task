@@ -1,15 +1,5 @@
 const { fetch, fetchAll } = require('../../lib/postgres')
 
-const LOGIN = `
-    SELECT
-        id
-    FROM
-        users
-    WHERE
-        id = $1
-    AND
-        password = $2
-`
 const FIND_USER = `
     SELECT
         *
@@ -33,13 +23,11 @@ const NEW_USER = `
     VALUES ($1, $2)
 `
 
-const userLogin = (login, password) => fetchAll(LOGIN, login, password)
 const registerUser = (login, password) => fetchAll(NEW_USER, login, password)
 const findUser = (login) => fetch(FIND_USER, login)
 const findUserById = (id) => fetch(FIND_USER_BY_ID, id)
 
 module.exports = {
-    userLogin,
     registerUser,
     findUser,
     findUserById
