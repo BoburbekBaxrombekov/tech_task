@@ -116,9 +116,7 @@ module.exports = {
             const newArr = authorization.split(" ")
             newArr.splice(0, 1)
             const tokenData = jwt.decode(newArr[0], { complete: true })
-            console.log(tokenData);
             jwt.sign({email: tokenData.payload.email, user_uuid: tokenData.payload.user_uuid}, KEYS.jwt, { expiresIn: 1 } , (logout, err) => {
-                console.log(logout);
             if (logout) {
             res.send({msg : 'You have been Logged Out' });
             } else {
