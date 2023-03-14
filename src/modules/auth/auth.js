@@ -1,6 +1,6 @@
 const bcyrpt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { registerUser, findUser } = require('./model')
+const { registerUser, findUser, expireToken } = require('./model')
 const User = require('../../models/user_model')
 
 const {KEYS} = require('../../config')
@@ -49,9 +49,11 @@ module.exports = {
             const tokenData = jwt.decode(newArr[0], { complete: true })
             delete payload.iat;
             delete payload.exp;
+            
             if(tokenData.payload.email && tokenData.payload.user_uuid){
                 //* If token is correct
                 const { email, user_uuid } = tokenData.payload
+                jwt.sign({email: email, user_uuid: user_uuid}, KEYS.jwt, {expiresIn: 0})
                 const newToken = jwt.sign({
                     email: email,
                     user_uuid: user_uuid
@@ -116,12 +118,9 @@ module.exports = {
             const newArr = authorization.split(" ")
             newArr.splice(0, 1)
             const tokenData = jwt.decode(newArr[0], { complete: true })
-            jwt.sign({email: tokenData.payload.email, user_uuid: tokenData.payload.user_uuid}, KEYS.jwt, { expiresIn: 1 } , (logout, err) => {
-            if (logout) {
-            res.send({msg : 'You have been Logged Out' });
-            } else {
-            res.send({msg:'Error'});
-            }})
+            jwt.sign({email: tokenData.payload.email, user_uuid: tokenData.payload.user_uuid}, KEYS.jwt, { expiresIn: 1 })
+            await expireToken(newArr[0])
+            res.send({status: 'success', message: 'logged-out'})
         } catch (err) {
             console.log(err.message)
             res.send({message: "Something went wrong!"}).status(500)

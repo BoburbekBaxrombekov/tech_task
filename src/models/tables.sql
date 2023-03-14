@@ -12,3 +12,7 @@ CREATE TABLE files(
     storage varchar(16),
     upload_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
+CREATE TABLE expired_tokens(
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    token text
+);
