@@ -94,5 +94,40 @@ module.exports = {
             console.log(err.message)
             res.send({message: "Something went wrong!"}).status(500)
         }
-    }
+    },
+    Info: async (req, res) => {
+        try {
+            const { authorization } = req.headers
+            const newArr = authorization.split(" ")
+            newArr.splice(0, 1)
+            const tokenData = jwt.decode(newArr[0], { complete: true })
+            if(tokenData.payload.user_uuid){
+                res.send({id: tokenData.payload.user_uuid})
+            }else{
+                res.send({message: "Token is invalid"}).status(500)
+            }
+        } catch (err) {
+            console.log(err.message)
+            res.send({message: "Something went wrong!"}).status(500)
+        }
+    },
+    LogOut: async (req, res) => {
+        try {
+            const { authorization } = req.headers
+            const newArr = authorization.split(" ")
+            newArr.splice(0, 1)
+            const tokenData = jwt.decode(newArr[0], { complete: true })
+            console.log(tokenData);
+            jwt.sign({email: tokenData.payload.email, user_uuid: tokenData.payload.user_uuid}, KEYS.jwt, { expiresIn: 1 } , (logout, err) => {
+                console.log(logout);
+            if (logout) {
+            res.send({msg : 'You have been Logged Out' });
+            } else {
+            res.send({msg:'Error'});
+            }})
+        } catch (err) {
+            console.log(err.message)
+            res.send({message: "Something went wrong!"}).status(500)
+        }
+    },
 }
