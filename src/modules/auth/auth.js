@@ -53,11 +53,10 @@ module.exports = {
             if(tokenData.payload.email && tokenData.payload.user_uuid){
                 //* If token is correct
                 const { email, user_uuid } = tokenData.payload
-                jwt.sign({email: email, user_uuid: user_uuid}, KEYS.jwt, {expiresIn: 0})
                 const newToken = jwt.sign({
                     email: email,
                     user_uuid: user_uuid
-                }, KEYS.jwt, {expiresIn: 60 * 15})
+                }, KEYS.jwt, {expiresIn: 60 * 60})
                 res.send({
                     token: `Bearer ${newToken}`
                 }).status(200)
